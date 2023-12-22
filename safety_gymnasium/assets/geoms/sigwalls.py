@@ -22,6 +22,93 @@ from safety_gymnasium.assets.color import COLOR
 from safety_gymnasium.assets.group import GROUP
 from safety_gymnasium.bases.base_object import Geom
 
+@dataclass
+class Hardwalls(Geom):  # pylint: disable=too-many-instance-attributes
+    """None collision walls.
+
+    This class is used for showing the boundary which is forbidden for entering.
+    """
+
+    name: str = 'sigwalls'
+    num: int = 2
+    locate_factor: float = 2.5
+    size: float = 2.5
+    placements: list = None
+    keepout: float = 0.0
+
+    color: np.array = COLOR['sigwall']
+    alpha: float = 0.1
+    group: np.array = GROUP['sigwall']
+    is_lidar_observed: bool = False
+    is_constrained: bool = False
+    is_meshed: bool = False
+    mesh_name: str = name[:-1]
+
+    def __post_init__(self) -> None:
+        assert (
+            self.locate_factor >= 0
+        ), 'For cost calculation, the locate_factor must be greater than or equal to zero.'
+        self.locations: list = [
+            (self.locate_factor, 0),
+            (-self.locate_factor, 0),
+            (0, self.locate_factor),
+            (0, -self.locate_factor),
+        ]
+
+        self.index: int = 0
+
+    def index_tick(self):
+        """Count index."""
+        self.index += 1
+        self.index %= self.num
+
+    def get_config(self, xy_pos, rot):  # pylint: disable=unused-argument
+        """To facilitate get specific config for this object."""
+        body = {
+            'name': self.name,
+            'pos': np.r_[xy_pos, 0.25],
+            'rot': 0,
+            'geoms': [
+                {
+                    'name': self.name,
+                    'size': np.array([0.05, self.size, 0.3]),
+                    'type': 'box',
+                    'group': self.group,
+                    'rgba': self.color * np.array([1, 1, 1, self.alpha]),
+                },
+            ],
+        }
+        if self.index >= 2:
+            body.update({'rot': np.pi / 2})
+        self.index_tick()
+        if self.is_meshed:
+            body['geoms'][0].update(
+                {
+                    'type': 'mesh',
+                    'mesh': self.mesh_name,
+                    'material': self.mesh_name,
+                    'euler': [0, 0, 0],
+                },
+            )
+        return body
+
+    def cal_cost(self):
+        """Contacts Processing."""
+        cost = {}
+        if not self.is_constrained:
+            return cost
+        cost['cost_out_of_boundary'] = np.abs(self.agent.pos[0]) > self.locate_factor
+        if self.num == 4:
+            cost['cost_out_of_boundary'] = (
+                cost['cost_out_of_boundary'] or np.abs(self.agent.pos[1]) > self.locate_factor
+            )
+
+        return cost
+
+    @property
+    def pos(self):
+        """Helper to get list of Sigwalls positions."""
+
 
 @dataclass
 class Sigwalls(Geom):  # pylint: disable=too-many-instance-attributes

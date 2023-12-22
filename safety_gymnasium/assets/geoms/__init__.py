@@ -23,7 +23,7 @@ from safety_gymnasium.assets.geoms.goal import Goal
 from safety_gymnasium.assets.geoms.hazards import Hazards
 from safety_gymnasium.assets.geoms.oranges import Oranges
 from safety_gymnasium.assets.geoms.pillars import Pillars
-from safety_gymnasium.assets.geoms.sigwalls import Sigwalls
+from safety_gymnasium.assets.geoms.sigwalls import Sigwalls, Hardwalls
 from safety_gymnasium.assets.geoms.staged_goal import StagedGoal
 from safety_gymnasium.assets.geoms.walls import Walls
 
@@ -39,4 +39,5 @@ GEOMS_REGISTER = [
     Pillars,
     Walls,
     Sigwalls,
+    Hardwalls
 ]
