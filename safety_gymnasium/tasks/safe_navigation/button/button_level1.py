@@ -56,5 +56,5 @@ class ButtonLevel1(ButtonLevel0):
         # import pdb; pdb.set_trace()
         self.buttons.timer = 0  # pylint: disable=no-member
         # move the agent back to a position within the map if it goes out of boundaries
-        # self.agent.pos = np.clip(self.agent.pos, self.agent_min, self.agent_max)
+
         
