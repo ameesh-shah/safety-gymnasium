@@ -42,14 +42,15 @@ class ButtonLevel1(ButtonLevel0):
         self.buttons.is_constrained = True  # pylint: disable=no-member
         self.original_button_locations = self.buttons.locations
         self.mechanism_conf.randomize_layout = False
+        self.mechanism_conf.continue_goal = False  # change this if we're using the goal button to help guide the agent
         self.lidar_conf.max_dist = 5  # large enough distance so all objects will be detected
         self.agent_min = -2.
         self.agent_max = 2.
 
-    @property
-    def goal_achieved(self):
-        # override to prevent the environment from blocking observations
-        return False
+    # @property
+    # def goal_achieved(self):
+    #     # override to prevent the environment from blocking observations
+    #     return False
     
     def specific_reset(self):
         """Reset the buttons timer."""
