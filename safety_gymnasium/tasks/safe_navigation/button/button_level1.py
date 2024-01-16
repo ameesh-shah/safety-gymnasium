@@ -36,13 +36,13 @@ class ButtonLevel1(ButtonLevel0):
         super().__init__(config=config)
 
         self.placements_conf.extents = [-2.0, -2.0, 2.0, 2.0]
-        # self._add_geoms(Hazards(num=8, keepout=0.05))
-        self._add_mocaps(Gremlins(num=1, travel=0.35, keepout=0.4))
+        self._add_geoms(Hazards(num=6, keepout=0.05))
+        self._add_mocaps(Gremlins(num=2, travel=0.35, keepout=0.4))
         self._add_geoms(Hardwalls(num=4, locate_factor=2.0, keepout=0.18))
         self.buttons.is_constrained = True  # pylint: disable=no-member
         self.original_button_locations = self.buttons.locations
         self.mechanism_conf.randomize_layout = False
-        self.mechanism_conf.continue_goal = False  # change this if we're using the goal button to help guide the agent
+        # self.mechanism_conf.continue_goal = False  # change this if we're using the goal button to help guide the agent
         self.lidar_conf.max_dist = 5  # large enough distance so all objects will be detected
         self.agent_min = -2.
         self.agent_max = 2.
