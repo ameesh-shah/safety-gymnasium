@@ -27,6 +27,7 @@ from safety_gymnasium.bases.base_task import BaseTask
 from safety_gymnasium.utils.common_utils import ResamplingError, quat2zalign
 from safety_gymnasium.utils.task_utils import get_task_class_name
 
+DEFAULT_SEED = np.random.randint(1e6)
 
 @dataclass
 class RenderConf:
@@ -168,7 +169,7 @@ class Builder(gymnasium.Env, gymnasium.utils.EzPickle):
 
         if not self.task.mechanism_conf.randomize_layout:
             assert seed is None, 'Cannot set seed if randomize_layout=False'
-            self.set_seed(0)
+            self.set_seed(DEFAULT_SEED)
         elif seed is not None:
             self.set_seed(seed)
 

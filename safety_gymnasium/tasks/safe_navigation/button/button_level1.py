@@ -25,7 +25,6 @@ import numpy as np
 from safety_gymnasium.assets.color import COLOR
 from safety_gymnasium.assets.group import GROUP
 from safety_gymnasium.assets.geoms import Hardwalls
-
 class ButtonLevel1(ButtonLevel0):
     """An agent must press a goal button while avoiding hazards and gremlins.
 
@@ -34,7 +33,8 @@ class ButtonLevel1(ButtonLevel0):
 
     def __init__(self, config) -> None:
         super().__init__(config=config)
-
+        # self.set_seed(10)
+        # self.random_generator.set_random_seed(54)
         self.placements_conf.extents = [-2.0, -2.0, 2.0, 2.0]
         self._add_geoms(Hazards(num=6, keepout=0.05))
         self._add_mocaps(Gremlins(num=2, travel=0.2, keepout=0.4))
@@ -55,6 +55,7 @@ class ButtonLevel1(ButtonLevel0):
     def specific_reset(self):
         """Reset the buttons timer."""
         # import pdb; pdb.set_trace()
+        # self.set_seed(10)
         self.buttons.timer = 0  # pylint: disable=no-member
         # move the agent back to a position within the map if it goes out of boundaries
 
