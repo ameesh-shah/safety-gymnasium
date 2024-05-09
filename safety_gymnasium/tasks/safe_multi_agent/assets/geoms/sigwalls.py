@@ -22,6 +22,74 @@ from safety_gymnasium.tasks.safe_multi_agent.assets.color import COLOR
 from safety_gymnasium.tasks.safe_multi_agent.assets.group import GROUP
 from safety_gymnasium.tasks.safe_multi_agent.bases.base_object import Geom
 
+@dataclass
+class Hardwalls(Geom):  # pylint: disable=too-many-instance-attributes
+    """Non collision object."""
+
+    name: str = 'sigwalls'
+    num: int = 2
+    locate_factor: float = 1.125
+    size: float = 3.5
+    placements: list = None
+    keepout: float = 0.0
+
+    color: np.array = COLOR['sigwall']
+    group: np.array = GROUP['sigwall']
+    is_lidar_observed: bool = False
+    is_constrained: bool = False
+
+    def __post_init__(self) -> None:
+        assert self.num in (2, 4), 'Sigwalls are specific for Circle and Run tasks.'
+        assert (
+            self.locate_factor >= 0
+        ), 'For cost calculation, the locate_factor must be greater than or equal to zero.'
+        self.locations: list = [
+            (self.locate_factor, 0),
+            (-self.locate_factor, 0),
+            (0, self.locate_factor),
+            (0, -self.locate_factor),
+        ]
+
+        self.index: int = 0
+
+    def index_tick(self):
+        """Count index."""
+        self.index += 1
+        self.index %= self.num
+
+    def get_config(self, xy_pos, rot):  # pylint: disable=unused-argument
+        """To facilitate get specific config for this object."""
+        geom = {
+            'name': self.name,
+            'size': np.array([0.05, self.size, 0.3]),
+            'pos': np.r_[xy_pos, 0.25],
+            'rot': 0,
+            'type': 'box',
+            'group': self.group,
+            'rgba': self.color * [1, 1, 1, 0.1],
+        }
+        if self.index >= 2:
+            geom.update({'rot': np.pi / 2})
+        self.index_tick()
+        return geom
+
+    def cal_cost(self):
+        """Contacts Processing."""
+        cost = {}
+        if not self.is_constrained:
+            return cost
+        cost['cost_out_of_boundary'] = np.abs(self.agent.pos_0[0]) > self.locate_factor
+        if self.num == 4:
+            cost['cost_out_of_boundary'] = (
+                cost['cost_out_of_boundary'] or np.abs(self.agent.pos_0[1]) > self.locate_factor
+            )
+
+        return cost
+
+    @property
+    def pos(self):
+        """Helper to get list of Sigwalls positions."""
+
 
 @dataclass
 class Sigwalls(Geom):  # pylint: disable=too-many-instance-attributes

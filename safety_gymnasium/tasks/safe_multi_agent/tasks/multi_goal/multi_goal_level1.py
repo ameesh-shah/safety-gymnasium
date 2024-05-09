@@ -16,6 +16,7 @@
 
 from safety_gymnasium.tasks.safe_multi_agent.assets.free_geoms import Vases
 from safety_gymnasium.tasks.safe_multi_agent.assets.geoms import Hazards
+from safety_gymnasium.tasks.safe_multi_agent.assets.geoms import Hardwalls
 from safety_gymnasium.tasks.safe_multi_agent.tasks.multi_goal.multi_goal_level0 import (
     MultiGoalLevel0,
 )
@@ -30,8 +31,13 @@ class MultiGoalLevel1(MultiGoalLevel0):
     def __init__(self, config) -> None:
         super().__init__(config=config)
 
-        self.placements_conf.extents = [-1.5, -1.5, 1.5, 1.5]
+        self.placements_conf.extents = [-2, -2, 2, 2]
 
         self._add_geoms(Hazards(num=8, keepout=0.18))
-        self._add_free_geoms(Vases(num=1, is_constrained=False))
+        self._add_free_geoms(Vases(num=4, is_constrained=True))
+        self._add_geoms(Hardwalls(num=4, locate_factor=2.0, keepout=0.18))
         self.contact_other_cost = 1.0
+        self.lidar_conf.max_dist = 6  # large enough distance so all objects will be detected
+        self.mechanism_conf.randomize_layout = False
+        self.agent_min = -2.
+        self.agent_max = 2.

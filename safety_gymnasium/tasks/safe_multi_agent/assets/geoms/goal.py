@@ -96,3 +96,22 @@ class GoalRed(Goal):
 
     def __post_init__(self) -> None:
         self.color: np.ndarray = np.array([0.7412, 0.0431, 0.1843, 1])
+
+
+@dataclass
+class GoalGreen(Goal):
+    """Green goal."""
+
+    name: str = 'goal_green'
+
+    def __post_init__(self) -> None:
+        self.color: np.ndarray = np.array([0.0039, 0.3961, 0.1529, 1])
+
+@dataclass
+class GoalPurple(Goal):
+    """Purple goal."""
+
+    name: str = 'goal_purple'
+
+    def __post_init__(self) -> None:
+        self.color: np.ndarray = np.array([0.2961, 0.0039, 0.2529, 1])
