@@ -36,7 +36,7 @@ class ButtonLevel1(ButtonLevel0):
         # self.set_seed(10)
         # self.random_generator.set_random_seed(54)
         self.placements_conf.extents = [-2.0, -2.0, 2.0, 2.0]
-        self._add_geoms(Hazards(num=6, keepout=0.05))
+        self._add_geoms(Hazards(num=8, keepout=0.05))
         self._add_mocaps(Gremlins(num=2, travel=0.2, keepout=0.4))
         self._add_geoms(Hardwalls(num=4, locate_factor=2.0, keepout=0.18))
         self.buttons.is_constrained = True  # pylint: disable=no-member

@@ -85,3 +85,41 @@ class Goal(Geom):  # pylint: disable=too-many-instance-attributes
     def pos(self):
         """Helper to get goal position from layout."""
         return self.engine.data.body(self.name).xpos.copy()
+
+@dataclass
+class GoalBlue(Goal):
+    """Blue goal."""
+
+    name: str = 'goal_blue'
+
+    def __post_init__(self) -> None:
+        self.color: np.ndarray = np.array([0.0039, 0.1529, 0.3961, 1])
+
+
+@dataclass
+class GoalRed(Goal):
+    """Red goal."""
+
+    name: str = 'goal_red'
+
+    def __post_init__(self) -> None:
+        self.color: np.ndarray = np.array([0.7412, 0.0431, 0.1843, 1])
+
+
+@dataclass
+class GoalGreen(Goal):
+    """Green goal."""
+
+    name: str = 'goal_green'
+
+    def __post_init__(self) -> None:
+        self.color: np.ndarray = np.array([0.0039, 0.3961, 0.1529, 1])
+
+@dataclass
+class GoalPurple(Goal):
+    """Purple goal."""
+
+    name: str = 'goal_purple'
+
+    def __post_init__(self) -> None:
+        self.color: np.ndarray = np.array([0.2961, 0.0039, 0.2529, 1])

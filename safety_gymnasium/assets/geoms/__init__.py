@@ -19,7 +19,7 @@ from safety_gymnasium.assets.geoms.buttons import Buttons
 from safety_gymnasium.assets.geoms.circle import Circle
 
 # Extra geoms (immovable objects) to add to the scene
-from safety_gymnasium.assets.geoms.goal import Goal
+from safety_gymnasium.assets.geoms.goal import Goal, GoalBlue, GoalGreen, GoalPurple, GoalRed
 from safety_gymnasium.assets.geoms.hazards import Hazards
 from safety_gymnasium.assets.geoms.oranges import Oranges
 from safety_gymnasium.assets.geoms.pillars import Pillars
@@ -33,6 +33,10 @@ GEOMS_REGISTER = [
     Buttons,
     Circle,
     Goal,
+    GoalBlue,
+    GoalGreen,
+    GoalRed,
+    GoalPurple,
     StagedGoal,
     Hazards,
     Oranges,

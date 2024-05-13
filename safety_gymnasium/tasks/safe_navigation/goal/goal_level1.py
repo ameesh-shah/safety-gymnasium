@@ -17,7 +17,7 @@
 from safety_gymnasium.assets.free_geoms import Vases
 from safety_gymnasium.assets.geoms import Hazards
 from safety_gymnasium.tasks.safe_navigation.goal.goal_level0 import GoalLevel0
-
+from safety_gymnasium.assets.geoms import Hardwalls
 
 class GoalLevel1(GoalLevel0):
     """An agent must navigate to a goal while avoiding hazards.
@@ -32,3 +32,9 @@ class GoalLevel1(GoalLevel0):
 
         self._add_geoms(Hazards(num=8, keepout=0.18))
         self._add_free_geoms(Vases(num=1, is_constrained=False))
+        self._add_geoms(Hardwalls(num=4, locate_factor=1.5, keepout=0.18))
+        self.mechanism_conf.randomize_layout = False
+        self.lidar_conf.max_dist = 6  # large enough distance so all objects will be detected
+        self.agent_min = -2.
+        self.agent_max = 2.
+
